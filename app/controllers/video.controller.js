@@ -1,6 +1,6 @@
 const Video = require('../models/video.model.js');
 
-// Create and Save a new Note
+// Create and Save a new video
 exports.create = (req, res) => {
     // Validate request
     // Validate request
@@ -28,7 +28,7 @@ exports.create = (req, res) => {
         });
     });
 };
-// Retrieve and return all notes from the database.
+// Retrieve and return all videos from the database.
 exports.findAll = (req, res) => {
     Video.find()
     .then(videos => {
@@ -40,16 +40,16 @@ exports.findAll = (req, res) => {
     });
 };
 
-// Find a single note with a noteId
+// Find a single video with a videoId
 exports.findOne = (req, res) => {
-    Note.findById(req.params.videoId)
+    video.findById(req.params.videoId)
     .then(video => {
         if(!video) {
             return res.status(404).send({
                 message: "Video not found with id " + req.params.videoId
             });            
         }
-        res.send(note);
+        res.send(video);
     }).catch(err => {
         if(err.kind === 'ObjectId') {
             return res.status(404).send({
@@ -62,29 +62,29 @@ exports.findOne = (req, res) => {
     });
 };
 
-// Update a note identified by the noteId in the request
+// Update a video identified by the videoId in the request
 exports.update = (req, res) => {
     // Validate Request
     if(!req.body.content) {
         return res.status(400).send({
-            message: "Note content can not be empty"
+            message: "video content can not be empty"
         });
     }
 
-    // Find note and update it with the request body
+    // Find video and update it with the request body
     Video.findByIdAndUpdate(req.params.videoId, {
         title: req.body.title || "Vídeo sem Título",
         description: req.body.description,
 	videoUrl: req.body.videoUrl,
 	nextVideo: req.body.nextVideo
     }, {new: true})
-    .then(note => {
-        if(!note) {
+    .then(video => {
+        if(!video) {
             return res.status(404).send({
                 message: "Video not found with id " + req.params.videoId
             });
         }
-        res.send(note);
+        res.send(video);
     }).catch(err => {
         if(err.kind === 'ObjectId') {
             return res.status(404).send({
@@ -97,11 +97,11 @@ exports.update = (req, res) => {
     });
 };
 
-// Delete a note with the specified noteId in the request
+// Delete a video with the specified videoId in the request
 exports.delete = (req, res) => {
-    Note.findByIdAndRemove(req.params.videoId)
-    .then(note => {
-        if(!note) {
+    video.findByIdAndRemove(req.params.videoId)
+    .then(video => {
+        if(!video) {
             return res.status(404).send({
                 message: "Video not found with id " + req.params.videoId
             });
